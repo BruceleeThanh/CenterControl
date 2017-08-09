@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size10dp"
+    android:background="@drawable/backgroud_main"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:animateLayoutChanges="true">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/size10dp">
+
+        <TextView
+            android:id="@+id/txtwifiOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Wifi: On"
+            android:textColor="@color/colorWhite"
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/img_scroll_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:src="@drawable/ic_scroll_down_up" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size10dp"
+        android:gravity="center"
+        >
+
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size5dp"
+            android:id="@+id/img_airplane"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_round_unactive"
+            android:src="@drawable/ic_airplane_unactive" />
+
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size5dp"
+            android:id="@+id/img_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_round_unactive"
+            android:src="@drawable/ic_wifi_unactive" />
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size5dp"
+            android:id="@+id/img_rotate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_round_unactive"
+            android:src="@drawable/ic_rotate_screen_unactive" />
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size5dp"
+            android:id="@+id/img_bluetooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_round_unactive"
+            android:src="@drawable/ic_bluetooth_unactive" />
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size5dp"
+            android:id="@+id/img_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_round_unactive"
+            android:src="@drawable/ic_datamobile_unactive" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size1dp"
+        android:layout_margin="@dimen/size10dp"
+        android:background="@color/colorView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size10dp"
+        android:text="Brightness"
+        android:textColor="@color/colorWhite" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size10dp"
+        android:layout_marginRight="@dimen/size10dp"
+        android:orientation="horizontal"
+        android:weightSum="8">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_brightness_off" />
+
+        <SeekBar
+            android:id="@+id/seebarBrightness"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_brightness_on" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Automatic Brightness"
+            android:textColor="@color/colorWhite" />
+
+        <FrameLayout
+            android:id="@+id/frame_auto_bright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_auto_off">
+
+            <ImageButton
+                android:id="@+id/img_auto_bright_off"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_gravity="center|left"
+                android:background="@null"
+                android:src="@drawable/ic_autorow1" />
+
+            <ImageButton
+                android:clickable="true"
+                android:id="@+id/img_auto_bright_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:background="@null"
+                android:src="@drawable/ic_autorow1"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size1dp"
+        android:layout_margin="@dimen/size10dp"
+        android:background="@color/colorView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size10dp"
+        android:layout_marginRight="@dimen/size10dp"
+        android:layout_marginTop="@dimen/size5dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size5dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/img_screen_timeout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:src="@drawable/ic_timeout_10s" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/size10dp"
+                android:text="Screen Timeout"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size5dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/img_sign_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@null"
+                android:src="@drawable/ic_sign_data" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/size10dp"
+                android:text="Sign Data"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size1dp"
+        android:layout_margin="@dimen/size10dp"
+        android:background="@color/colorView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/size20dp"
+        android:layout_marginLeft="@dimen/size10dp"
+        android:layout_marginRight="@dimen/size10dp"
+        android:gravity="center"
+        >
+
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size10dp"
+            android:clickable="true"
+            android:id="@+id/img_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_oval_unactive"
+            android:src="@drawable/ic_camera_unactive" />
+
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size10dp"
+            android:clickable="true"
+            android:id="@+id/img_flashlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_oval_unactive"
+            android:src="@drawable/ic_flashlight_unactive" />
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size10dp"
+            android:clickable="true"
+            android:id="@+id/img_calculator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_oval_unactive"
+            android:src="@drawable/ic_calculator_unactive" />
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size10dp"
+            android:clickable="true"
+            android:id="@+id/img_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_oval_unactive"
+            android:src="@drawable/ic_clock_unactive" />
+        <ImageButton
+            android:layout_marginLeft="@dimen/size10dp"
+            android:layout_marginRight="@dimen/size10dp"
+            android:clickable="true"
+            android:id="@+id/img_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_frame_oval_unactive"
+            android:src="@drawable/ic_control_unactive" />
+    </LinearLayout>
+
+
+
+</LinearLayout>
