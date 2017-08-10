@@ -4,13 +4,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,9 +15,6 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by VuDuc on 8/7/2017.
@@ -28,19 +22,24 @@ import static android.content.ContentValues.TAG;
 
 public class MyService extends Service {
 
+    WindowManager.LayoutParams params;
+    WindowManager.LayoutParams bottomParams;
+    WindowManager.LayoutParams backgroundParams;
+    Animation inAnimation;
+    Animation outAnimation;
+    Context mcontext;
     private WindowManager windowManager;
     private View overlayView;
-    private View overlayBackGround;
-    WindowManager.LayoutParams params;
-    WindowManager.LayoutParams backgoundParams;
-
-    private Animation animVisible;
-    private Animation animGone;
+    private View overlayBottom;
+    private View overlayBackground;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        mcontext = this;
+        initAnimations();
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -61,44 +60,65 @@ public class MyService extends Service {
 
         params.gravity = Gravity.CENTER | Gravity.BOTTOM;
         params.x = 0;
-        params.y = -300;
+        params.y = 20;
 
         overlayView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.floating_view, null);
 
-        animVisible = AnimationUtils.loadAnimation(overlayView.getContext(), R.anim.translate_in);
-        animGone = AnimationUtils.loadAnimation(overlayView.getContext(), R.anim.translate_out);
-
-
-        backgoundParams = new WindowManager.LayoutParams(
+        //Phần dưới màn hình
+        bottomParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
-        backgoundParams.gravity = Gravity.BOTTOM;
-        overlayBackGround = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.floating_view2, null);
+        bottomParams.gravity = Gravity.BOTTOM;
+        overlayBottom = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.floating_view2, null);
 
-        windowManager.addView(overlayBackGround, backgoundParams);
+        //Cho phần backgound
+        backgroundParams = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.TYPE_PHONE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                PixelFormat.TRANSLUCENT);
+        backgroundParams.gravity = Gravity.CENTER;
+        overlayBackground = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.floating_view3, null);
+
+        windowManager.addView(overlayBackground, backgroundParams);
+        windowManager.addView(overlayBottom, bottomParams);
         windowManager.addView(overlayView, params);
 
         overlayView.setOnTouchListener(new View.OnTouchListener() {
+            long startTime = System.currentTimeMillis();
             private int initialX;
             private int initialY;
             private float initialTouchX;
             private float initialTouchY;
+            private float startY;
 
-            long startTime = System.currentTimeMillis();
+            private Rect rect;
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         initialX = params.x;
                         initialY = params.y;
                         initialTouchX = motionEvent.getRawX();
                         initialTouchY = motionEvent.getRawY();
+                        startY = motionEvent.getY();
                         break;
                     case MotionEvent.ACTION_UP:
+                        float endY = motionEvent.getY();
+                        if (endY > startY && endY - startY > 150) {
+                            //Move down
+                            overlayView.startAnimation(outAnimation);
+                            overlayView.setVisibility(View.GONE);
+                            overlayBackground.setVisibility(View.GONE);
+                            overlayBottom.setVisibility(View.VISIBLE);
+                        }
+
                         params.y = 20;
                         windowManager.updateViewLayout(overlayView, params);
                         break;
@@ -114,7 +134,8 @@ public class MyService extends Service {
             }
         });
 
-        overlayBackGround.setOnTouchListener(new View.OnTouchListener() {
+        overlayBottom.setOnTouchListener(new View.OnTouchListener() {
+
             private float starty;
 
             @Override
@@ -126,17 +147,28 @@ public class MyService extends Service {
                     case MotionEvent.ACTION_UP: {
                         float endY = motionEvent.getY();
                         if (endY < starty) {
+                            //Move up
+                            overlayView.startAnimation(inAnimation);
                             overlayView.setVisibility(View.VISIBLE);
-                            overlayView.animate()
-                                    .translationYBy(0)
-                                    .translationY(-overlayView.getHeight())
-                                    .setDuration(3000)
-                                    .setListener(null);
-                        } else {
-                            overlayView.startAnimation(animGone);
-                            overlayView.setVisibility(View.GONE);
+                            overlayBackground.setVisibility(View.VISIBLE);
+                            overlayBottom.setVisibility(View.GONE);
                         }
                     }
+                }
+                return false;
+            }
+        });
+
+        overlayBackground.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        overlayView.startAnimation(outAnimation);
+                        overlayView.setVisibility(View.GONE);
+                        overlayBackground.setVisibility(View.GONE);
+                        overlayBottom.setVisibility(View.VISIBLE);
+                        break;
                 }
                 return false;
             }
@@ -148,9 +180,15 @@ public class MyService extends Service {
         super.onDestroy();
         if (overlayView != null) {
             WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+            wm.removeView(overlayBackground);
             wm.removeView(overlayView);
-            wm.removeView(overlayBackGround);
+            wm.removeView(overlayBottom);
         }
+    }
+
+    private void initAnimations() {
+        inAnimation = AnimationUtils.loadAnimation(mcontext, R.anim.in_animation);
+        outAnimation = AnimationUtils.loadAnimation(mcontext, R.anim.out_animation);
     }
 
     @Override
